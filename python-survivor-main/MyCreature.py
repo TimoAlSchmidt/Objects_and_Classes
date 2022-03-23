@@ -9,8 +9,7 @@ class MyCreature(core.Creature):
       nearCreatures[0].x == self.x and nearCreatures[0].y == self.y:
       self.hit(nearCreatures[0])
     else:
-      self.patrol()
-      pass
+      self.patrol(9)
 
   def moveAmountInDirection(self, amount, direction):
     if direction == 0:
@@ -26,28 +25,50 @@ class MyCreature(core.Creature):
       for i in range(amount):
         self.moveLeft()
 
-  def patrol(self):
+
+  def zigzag(self, amount):
+    for i in range(amount):
+      self.moveLeft()
+    for i in range(amount):
+      self.moveRight()
+
+
+  def patrol(self, distance):
     #patrouilleert strak langs de randen van de arena. (zie Wiki: arena.height etc.)
-    width = arena.width-1
-    height = arena.height-1
+    width = arena.width-1 - distance
+    height = arena.height-1 - distance
     x = self._x
     y = self._y
 
-    if x != 0 and y != 0 and x != width and y != height:
-      self.moveLeft()
-      print("moveLeft")
-    elif x == 0 and y != 0:
+    if y != distance and y != height:
+      if x != distance and x != width:
+        if x > distance:
+          self.moveLeft()
+          return
+        elif x < width+1:
+          self.moveRight()
+          return
+
+    if y != distance and y != height:
+      if y < distance:
+        self.moveDown()
+        return
+      elif y > height:
+        self.moveUp()
+        return
+    
+    if y > distance and x == distance:
       self.moveUp()
-      print("moveUp")
-    elif x != width and y == 0:
+      return
+    if x < width and y == distance: 
       self.moveRight()
-      print("moveRight")
-    elif x == width and y != height:
+      return
+    if y < height and x == width:
       self.moveDown()
-      print("moveDown")
-    elif x != 0 and y == height:
+      return
+    if x > distance and y == height:
       self.moveLeft()
-      print("moveLeft")
+      return
 
 
   def __str__(self):
@@ -59,6 +80,6 @@ class MyCreature(core.Creature):
 
 hero = MyCreature(name=":O")
 
-arena = core.Arena(5, 3)
+arena = core.Arena(30, 30)
 arena.registerCreature(hero)
 arena.start()
