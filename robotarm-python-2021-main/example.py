@@ -5,7 +5,8 @@ class SmartRobotArm(RobotArm):
         for i in range(times):
             super().moveRight()
 
-robotArm = SmartRobotArm('exercise 1')
+robotArm = SmartRobotArm()
+robotArm.loadMyLevel([["yellow", "yellow", "blue", "red"],[],[],[],["red"]],'moveRightTimes')
 
 # Jouw python instructies zet je vanaf hier:
 
