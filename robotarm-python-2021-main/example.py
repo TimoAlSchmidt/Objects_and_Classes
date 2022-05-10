@@ -14,13 +14,19 @@ class SmartRobotArm(RobotArm):
         for i in range(times):
             super().moveLeft()
 
+    def moveTo(self, position : int):
+        if position < self.position:
+            self.moveLeftTimes(self.position - position)
+        elif position > self.position:
+            self.moveRightTimes(position - self.position)
+
 robotArm = SmartRobotArm()
 robotArm.loadMyLevel([["yellow", "yellow", "blue", "red"],[],[],[],["red"]],'moveRightTimes')
 
 # Jouw python instructies zet je vanaf hier:
 
-robotArm.moveRightTimes(4)
-print(robotArm.position)
+robotArm.moveTo(6)
+robotArm.moveTo(0)
 
 
 # Na jouw code wachten tot het sluiten van de window:
