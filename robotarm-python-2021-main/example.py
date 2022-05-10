@@ -18,7 +18,6 @@ class SmartRobotArm(RobotArm):
 
 
     def moveTo(self, position : int):
-        position -= 1
         if position < self.position:
             self.moveLeftTimes(self.position - position)
         elif position > self.position:
@@ -31,6 +30,20 @@ class SmartRobotArm(RobotArm):
         return len(stacks[position])
 
 
+    def moveStackTo(self, position: int):
+        orig = self.position
+        if ((self.getStackSize(position) + self.getStackSize(orig)) < self._maxLayers):
+            for i in range(self.getStackSize(orig)):
+                self.grab()
+                self.moveTo(position)
+                self.drop()
+                self.moveTo(orig)
+            return True
+        else:
+            return False
+        
+
+
 
 
 robotArm = SmartRobotArm()
@@ -38,8 +51,10 @@ robotArm.loadMyLevel([["red"],[],[],["yellow", "yellow", "blue", "red"],[]],'mov
 
 # Jouw python instructies zet je vanaf hier:
 
-print(robotArm.getStackSize(robotArm.position))
-print(robotArm.getStackSize(4))
+robotArm.moveTo(4)
+robotArm.moveStackTo(1)
+robotArm.moveTo(1)
+robotArm.moveStackTo(2)
 
 
 # Na jouw code wachten tot het sluiten van de window:
