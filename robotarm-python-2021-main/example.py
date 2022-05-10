@@ -58,6 +58,19 @@ class SmartRobotArm(RobotArm):
         return False
 
 
+    def getNextColorLeft(self, color : str):
+        orig = self.position
+        while self.position < self._maxStacks-1:
+            try:
+                if self.stacks[self.position-1][-1:][0] == color:
+                    self.grab()
+                    return True
+            except:
+                pass
+            self.moveLeft()
+        return False
+
+
 
 
 
@@ -66,7 +79,9 @@ robotArm.randomLevel(10, 1)
 
 # Jouw python instructies zet je vanaf hier:
 
-robotArm.getNextColorRight("yellow")
+
+robotArm.moveTo(10)
+robotArm.getNextColorLeft("yellow")
 
 # Na jouw code wachten tot het sluiten van de window:
 robotArm.wait()
