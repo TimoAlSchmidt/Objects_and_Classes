@@ -4,7 +4,7 @@ class SmartRobotArm(RobotArm):
 
     @property
     def position(self):
-        return self._stack
+        return self._stack + 1
 
 
     def moveRightTimes(self, times : int):
@@ -25,19 +25,21 @@ class SmartRobotArm(RobotArm):
             self.moveRightTimes(position - self.position)
 
     
-    def getStackSize(self, position : int = 1):
+    def getStackSize(self, position: int = 1):
         position -= 1
         stacks = self._yard
-        print(len(stacks[position]))
+        return len(stacks[position])
+
+
 
 
 robotArm = SmartRobotArm()
-robotArm.loadMyLevel([[],[],["yellow", "yellow", "blue", "red"],[],["red"]],'moveRightTimes')
+robotArm.loadMyLevel([["red"],[],[],["yellow", "yellow", "blue", "red"],[]],'moveRightTimes')
 
 # Jouw python instructies zet je vanaf hier:
 
-robotArm.getStackSize(1)
-robotArm.getStackSize(3)
+print(robotArm.getStackSize(robotArm.position))
+print(robotArm.getStackSize(4))
 
 
 # Na jouw code wachten tot het sluiten van de window:
