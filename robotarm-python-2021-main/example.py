@@ -6,6 +6,9 @@ class SmartRobotArm(RobotArm):
     def position(self):
         return self._stack + 1
 
+    @property
+    def stacks(self):
+        return self._yard
 
     def moveRightTimes(self, times : int):
         for i in range(times):
@@ -26,8 +29,7 @@ class SmartRobotArm(RobotArm):
     
     def getStackSize(self, position: int = 1):
         position -= 1
-        stacks = self._yard
-        return len(stacks[position])
+        return len(self.stacks[position])
 
 
     def moveStackTo(self, position: int):
@@ -43,19 +45,28 @@ class SmartRobotArm(RobotArm):
             return False
         
 
+    def getNextColorRight(self, color : str):
+        orig = self.position
+        while self.position < self._maxStacks-1:
+            try:
+                if self.stacks[self.position-1][-1:][0] == color:
+                    self.grab()
+                    return True
+            except:
+                pass
+            self.moveRight()
+        return False
+
+
 
 
 
 robotArm = SmartRobotArm()
-robotArm.loadMyLevel([["red"],[],[],["yellow", "yellow", "blue", "red"],[]],'moveRightTimes')
+robotArm.randomLevel(10, 1)
 
 # Jouw python instructies zet je vanaf hier:
 
-robotArm.moveTo(4)
-robotArm.moveStackTo(1)
-robotArm.moveTo(1)
-robotArm.moveStackTo(2)
-
+robotArm.getNextColorRight("yellow")
 
 # Na jouw code wachten tot het sluiten van de window:
 robotArm.wait()
